@@ -1,43 +1,39 @@
 import kotlin.random.Random
 
 fun main(args: Array<String>) {
-/*
-* INT LIST 1.100
-* */
-
+    println("Run unit tests to test")
 }
 
-fun generate():List<Int>{
+fun getRandomItemToRemove()=Random(1).nextInt(100)
+fun generateWithRemovedItem(itemToRemove:Int):List<Int>{
     val intList= mutableListOf<Int>()
-    val target=100//Random(1).nextInt(100)
+
     for(i in 1 .. 100){
-        if(target!=i){
+        if(itemToRemove!=i){
             intList.add(i)
         }
     }
 
-    //intList.remove(target)
-    println( "random num= $target list= $intList")
+    println( "random num= $itemToRemove list= $intList")
     return intList
 }
 
-/**
- * find the mising number
- * */
-
 fun findMissingNumber(intList:List<Int>):Int{
-    if(intList[0]>1){
+    if(intList[0]>1){ //lower bound rule
         return 1
     }
 
-    for(i in 1 .. intList.size){
-        val nextIndex=i+1
+    if(intList[intList.size-1]<100){ //upper bound rule
+        return 100
+    }
+
+    //there was an off by one here as we were using the range and not the index
+    for((index) in intList.withIndex()){
+        val nextIndex=index+1
         if(nextIndex < intList.size){
-            if(intList[nextIndex] - intList[i] >1){
-                return intList[i]+1
+            if(intList[nextIndex] - intList[index] >1){
+                return intList[index]+1
             }
-        }else{
-            return 100
         }
     }
     return -1
